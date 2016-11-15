@@ -7,7 +7,7 @@
 #include<arpa/inet.h>
 #include<sys/socket.h>
 
-#define SERVER "127.0.0.1"
+
 #define BUFLEN 64  				//Max length of buffer
 #define PORT 666    			//The port on which to send data
 
@@ -17,12 +17,29 @@ void die(char *s)
     exit(1);
 }
 
-int main(int argc, char *argv[])
+
+int main(int argc, char **argv)
 {
+	//>>moje zmienne
+	int A_len,B_len,C_len;
+	char *server;
+
+	//<<
     struct sockaddr_in si_other;
     int s, i, slen=sizeof(si_other);
     char buf[BUFLEN];
     char message[BUFLEN];
+
+    server = argv[4];
+
+    //Wyswietlanie pobranych danych
+    printf("\n\rWczytane parametry: \n\r");
+    printf("\n\rZmienna A: %s" , argv[1]);
+    printf("\n\rZmienna B: %s" , argv[2]);
+    printf("\n\rZadanie : %s"  , argv[3]);
+    printf("\n\rADR: %s \n\r" , argv[4]);
+
+    sprintf(message , "%s %s %s" , argv[1] , argv[2] , argv[3]);
 
     if ( (s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
     {
@@ -33,7 +50,7 @@ int main(int argc, char *argv[])
     si_other.sin_family = AF_INET;
     si_other.sin_port = htons(PORT);
 
-    if (inet_aton(SERVER , &si_other.sin_addr) == 0)
+    if (inet_aton(server , &si_other.sin_addr) == 0)			//inte_aton konwertuje adres IP na binerne dane i laduje do struktury in_adr
     {
         fprintf(stderr, "inet_aton() failed\n");
         exit(1);
@@ -41,8 +58,8 @@ int main(int argc, char *argv[])
 
     while(1)
     {
-        printf("Enter message : ");
-        gets(message);
+       // printf("Enter message : ");
+       // gets(message);
 
         //send the message
         if (sendto(s, message, strlen(message) , 0 , (struct sockaddr *) &si_other, slen)==-1)
