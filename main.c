@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     printf("\n\rZmienna A: %s" 		, argv[1]);
     printf("\n\rZmienna B: %s" 		, argv[2]);
     printf("\n\rZadanie  : %s"  	, argv[3]);
-    printf("\n\rADR SERW : %s \n\r" , argv[4]);
+    printf("\n\rADR SERWERA : %s \n\r" , argv[4]);
 
     //Umieszczenie zmiennych w payloadzie
     sprintf(message , "%s %s %s" , argv[1] , argv[2] , argv[3]);
