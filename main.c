@@ -34,11 +34,12 @@ int main(int argc, char **argv)
 
     //Wyswietlanie pobranych danych
     printf("\n\rWczytane parametry: \n\r");
-    printf("\n\rZmienna A: %s" , argv[1]);
-    printf("\n\rZmienna B: %s" , argv[2]);
-    printf("\n\rZadanie : %s"  , argv[3]);
-    printf("\n\rADR: %s \n\r" , argv[4]);
+    printf("\n\rZmienna A: %s" 		, argv[1]);
+    printf("\n\rZmienna B: %s" 		, argv[2]);
+    printf("\n\rZadanie  : %s"  	, argv[3]);
+    printf("\n\rADR SERW : %s \n\r" , argv[4]);
 
+    //Umieszczenie zmiennych w payloadzie
     sprintf(message , "%s %s %s" , argv[1] , argv[2] , argv[3]);
 
     if ( (s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
@@ -76,7 +77,8 @@ int main(int argc, char **argv)
             die("recvfrom()");
         }
 
-        puts(buf);
+        //puts(buf);
+        printf("\n\r\n\r>>>WYNIK: %s", buf);
     }
 
     close(s);
