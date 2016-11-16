@@ -73,7 +73,7 @@ int main(int argc, char **argv)
         die("recvfrom()");
     }
 
-    printf("\n\r\n\r>>>WYNIK: %s", buf);
+    printf("\n\r\n\rResponse:%s", buf);
 
     close(s);
     return 0;
