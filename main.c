@@ -21,10 +21,9 @@ void die(char *s)
 int main(int argc, char **argv)
 {
 	//>>moje zmienne
-	int A_len,B_len,C_len;
 	char *server;
-
 	//<<
+
     struct sockaddr_in si_other;
     int s, i, slen=sizeof(si_other);
     char buf[BUFLEN];
@@ -34,13 +33,15 @@ int main(int argc, char **argv)
 
     //Wyswietlanie pobranych danych
     printf("\n\rWczytane parametry: \n\r");
-    printf("\n\rZmienna A: %s" , argv[1]);
-    printf("\n\rZmienna B: %s" , argv[2]);
-    printf("\n\rZadanie : %s"  , argv[3]);
-    printf("\n\rADR: %s \n\r" , argv[4]);
+    printf("\n\rZmienna A: %s" 		, argv[1]);
+    printf("\n\rZmienna B: %s" 		, argv[2]);
+    printf("\n\rZadanie  : %s"  	, argv[3]);
+    printf("\n\rADR SERW : %s \n\r" , argv[4]);
 
+    //Umieszczenie zmiennych w payloadzie
     sprintf(message , "%s %s %s" , argv[1] , argv[2] , argv[3]);
 
+    //Tworzenie gniazda
     if ( (s=socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == -1)
     {
         die("socket");
@@ -56,28 +57,23 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    while(1)
+    //send the message
+    if (sendto(s, message, strlen(message) , 0 , (struct sockaddr *) &si_other, slen)==-1)
     {
-       // printf("Enter message : ");
-       // gets(message);
-
-        //send the message
-        if (sendto(s, message, strlen(message) , 0 , (struct sockaddr *) &si_other, slen)==-1)
-        {
-            die("sendto()");
-        }
-
-        //receive a reply and print it
-        //clear the buffer by filling null, it might have previously received data
-        memset(buf,'\0', BUFLEN);
-        //try to receive some data, this is a blocking call
-        if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == -1)
-        {
-            die("recvfrom()");
-        }
-
-        puts(buf);
+        die("sendto()");
     }
+
+    //receive a reply and print it
+    //clear the buffer by filling null, it might have previously received data
+    memset(buf,'\0', BUFLEN);
+
+    //try to receive some data, this is a blocking call
+    if (recvfrom(s, buf, BUFLEN, 0, (struct sockaddr *) &si_other, &slen) == -1)
+    {
+        die("recvfrom()");
+    }
+
+    printf("\n\r\n\r>>>WYNIK: %s", buf);
 
     close(s);
     return 0;
