@@ -25,7 +25,7 @@ int main(int argc, char **argv)
 	//<<
 
     struct sockaddr_in si_other;
-    int s, i, slen=sizeof(si_other);
+    int s, slen=sizeof(si_other);
     char buf[BUFLEN];
     char message[BUFLEN];
 
@@ -63,6 +63,8 @@ int main(int argc, char **argv)
         die("sendto()");
     }
 
+    printf("\n\rWait for server...");
+
     //receive a reply and print it
     //clear the buffer by filling null, it might have previously received data
     memset(buf,'\0', BUFLEN);
@@ -73,7 +75,7 @@ int main(int argc, char **argv)
         die("recvfrom()");
     }
 
-    printf("\n\r\n\rResponse:%s", buf);
+    printf("\n\rResponse:\n\r%s", buf);
 
     close(s);
     return 0;
